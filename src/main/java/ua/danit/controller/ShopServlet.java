@@ -25,7 +25,10 @@ public class ShopServlet extends HttpServlet
 		String action = req.getParameter("action");
 		if(action.equals("regNew")){
 			PrintWriter writer = resp.getWriter();
-			writer.print(HtmlUtil.readPage("new-user.html"));
+			String outText = HtmlUtil.readPage("new-user.html");
+			outText = String.format(outText, "Input Your credentials");
+			writer.print(outText);
+
 		} else {
 			doGet(req, resp);
 		}

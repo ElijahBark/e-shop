@@ -2,22 +2,26 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Edit user page</title>
+    <title>User page</title>
 </head>
 <body>
 <br>
-%1s
-<br>
-<h1>Input your credentials</h1>
+<h1>%1s</h1>
 <br>
 <form action="client" method="post">
     <input type="hidden" value="edit" name="action">
     <input type="hidden" name="login" value="%2s">
-    <input type="password" name="pass" size="20">
-    <input type="password" name="checkPass" size="20">
-    <input type="text" name="firstName" size="20" placeholder="input text">
-    <input type="text" name="secondName" size="20" placeholder="input text">
-    <input type="submit" value="EDIT USER">
+    <input type="password" name="pass" size="20" placeholder="input new password">
+    <input type="password" name="checkPass" size="20" placeholder="repeat new password">
+    <input type="password" name="oldPass" size="25" placeholder="verify changes by old password">
+    <input type="text" name="firstName" size="20" placeholder="%3s" >
+    <input type="text" name="secondName" size="20" placeholder="%4s">
+    <input type="submit" value="EDIT INFO">
 </form>
+<!--<form action="client" method="post">-->
+    <!--<input type="hidden" value="delete" name="action">-->
+    <!--<input type="hidden" name="login" value="%5s">-->
+    <!--<input type="submit" value="DELETE">-->
+<!--</form>-->
 </body>
 </html>

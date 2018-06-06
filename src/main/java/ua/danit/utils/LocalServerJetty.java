@@ -4,6 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import ua.danit.controller.ClientServlet;
+import ua.danit.controller.ItemServlet;
 import ua.danit.controller.ShopServlet;
 
 public class LocalServerJetty
@@ -17,6 +18,9 @@ public class LocalServerJetty
 
 		ServletHolder clientHolder = new ServletHolder(new ClientServlet());
 		handler.addServlet(clientHolder, "/client");
+
+		ServletHolder itemHolder = new ServletHolder(new ItemServlet());
+		handler.addServlet(itemHolder, "/item");
 
 		server.setHandler(handler);
 		try

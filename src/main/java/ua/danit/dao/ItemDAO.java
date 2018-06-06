@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import ua.danit.model.Item;
 
 public class ItemDAO extends AbstractDAO<Item>
@@ -11,7 +14,7 @@ public class ItemDAO extends AbstractDAO<Item>
 	@Override
 	public void save(Item item)
 	{
-		String sql = "INSERT INTO item(item_id, name, price) VALUES(?,?,?)";
+		String sql = "INSERT INTO item(article_id, name, price) VALUES(?,?,?)";
 
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
@@ -29,7 +32,7 @@ public class ItemDAO extends AbstractDAO<Item>
 
 	@Override public void update(Item item)
 	{
-		String sql = "UPDATE item SET name=?, price=? WHERE item_id=?";
+		String sql = "UPDATE item SET name=?, price=? WHERE article_id=?";
 
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
@@ -45,11 +48,11 @@ public class ItemDAO extends AbstractDAO<Item>
 		}
 	}
 
-	@Override public Item get(Object itemId)
+	@Override public Item get(Object article_id)
 	{
 		Item item = new Item();
 
-		String sql = "SELECT * FROM item WHERE login='" + itemId + "'";
+		String sql = "SELECT * FROM item WHERE article_id='" + article_id + "'";
 
 		try (
 			Connection        connection  = ConnectionToDB.getConnection();
@@ -59,7 +62,7 @@ public class ItemDAO extends AbstractDAO<Item>
 		{
 			while ( rSet.next() )
 			{
-				item.setArticleId(rSet.getString("item_id"));
+				item.setArticleId(rSet.getString("article_id"));
 				item.setName(rSet.getString("name"));
 				item.setPrice(rSet.getInt("price"));
 
@@ -75,7 +78,7 @@ public class ItemDAO extends AbstractDAO<Item>
 
 	@Override public void delete(Object itemId)
 	{
-		String sql = "DELETE FROM item WHERE item_id=?";
+		String sql = "DELETE FROM item WHERE article_id=?";
 
 		try (
 			Connection connection = ConnectionToDB.getConnection();
@@ -89,5 +92,34 @@ public class ItemDAO extends AbstractDAO<Item>
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public List<Item> getAll()
+	{
+		List<Item> items = new ArrayList<>();
+
+		String sql = "SELECT * FROM item ";
+
+		try (
+				Connection        connection  = ConnectionToDB.getConnection();
+				PreparedStatement statement  = connection.prepareStatement(sql);
+				ResultSet rSet = statement.executeQuery();
+		)
+		{
+			while ( rSet.next() )
+			{
+				Item item = new Item();
+				item.setArticleId(rSet.getString("article_id"));
+				item.setName(rSet.getString("name"));
+				item.setPrice(rSet.getInt("price"));
+
+				items.add(item);
+			}
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+		return items;
 	}
 }

@@ -46,4 +46,14 @@ public class Client
 	{
 		this.secondName = secondName;
 	}
+
+	public boolean equals(Client client) {
+		if (secondName.equals(client.getSecondName())
+				&& firstName.equals(client.getFirstName())
+				&& login.equals(client.getLogin())
+				&& password.equals(client.getPassword())) {
+			return true;
+		}
+		return false;
+	}
 }

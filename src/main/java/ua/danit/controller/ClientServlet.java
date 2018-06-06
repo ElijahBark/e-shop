@@ -24,7 +24,7 @@ public class ClientServlet extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		String action = req.getParameter("action");
+        String action = req.getParameter("action");
 		/*if(action == null || action.isEmpty()){
 			action = req.getHeader("action");
 		}*/
@@ -36,21 +36,30 @@ public class ClientServlet extends HttpServlet
 			String    checkPass     = req.getParameter("checkPass");
 			String    firstName      = req.getParameter("firstName");
 			String    secondName      = req.getParameter("secondName");
-			if(!pass.equals(checkPass)){
-				resp.addHeader("action", "create");
-				resp.sendRedirect("/client");
-			}
-			Client client = new Client();
-			client.setLogin(login);
-			client.setPassword(pass);
-			client.setFirstName(firstName);
-			client.setSecondName(secondName);
-			clientDAO.save(client);
 
-			Client clientFromDB = clientDAO.get((String)client.getLogin());
-			if(clientFromDB != null){
+			if(!pass.equals(checkPass)){
 				PrintWriter writer = resp.getWriter();
-				writer.print("<h1>Congrats! You are registered!</h1> \n...go get some sleep...");
+				String outText = HtmlUtil.readPage("new-user.html");
+                outText = String.format(outText, "Passwords are not the same!");
+				writer.print(outText);
+			} else {
+				Client clientFromDB = clientDAO.get((String)login);
+				if(clientFromDB != null){
+					PrintWriter writer = resp.getWriter();
+					writer.print("<h1>Congrats! You are registered!</h1> \n...go get some sleep...");
+				} else {
+					Client client = new Client();
+					client.setLogin(login);
+					client.setPassword(pass);
+					client.setFirstName(firstName);
+					client.setSecondName(secondName);
+					clientDAO.save(client);
+
+                    PrintWriter writer = resp.getWriter();
+                    String outText = HtmlUtil.readPage("item-list.html");
+                    outText = String.format(outText, client.getFirstName() + " " + client.getSecondName(),client.getLogin(), HtmlUtil.getItems());
+                    writer.print(outText);
+				}
 			}
 		}
 		else if(action.equals("checkLogin"))
@@ -60,54 +69,81 @@ public class ClientServlet extends HttpServlet
 			Client    client    = clientDAO.get((String) login);
 			if ( client != null && pass.equals(client.getPassword()) )
 			{
-				PrintWriter writer = resp.getWriter();
-				String outText = HtmlUtil.readPage("edit-user.html").format("<h1>Congrats! You are user!</h1>", login);
-
-
-				writer.print(outText);
-
-
+                PrintWriter writer = resp.getWriter();
+                String outText = HtmlUtil.readPage("item-list.html");
+                outText = String.format(outText, client.getFirstName() + " " + client.getSecondName(),client.getLogin(), HtmlUtil.getItems());
+                writer.print(outText);
 			}
 			else
 			{
 				resp.sendRedirect("/shop-servlet");
 			}
 		}
+        else if(action.equals("profile"))
+        {
+            String login = req.getParameter("login");
+            Client client = clientDAO.get(login);
+            PrintWriter writer = resp.getWriter();
+            String outText = HtmlUtil.readPage("user-cabinet.html");
+            outText = String.format(outText,
+                    client.getFirstName() + " " + client.getSecondName(),
+                    client.getLogin(),
+                    client.getLogin(),
+                    HtmlUtil.getCarts(login));
+            writer.print(outText);
+
+
+//            PrintWriter writer = resp.getWriter();
+//            String login = req.getParameter("login");
+//            clientDAO = new ClientDAO();
+//            Client client = clientDAO.get(login);
+//            String firstName = client.getFirstName();
+//            String secondName = client.getSecondName();
+//            String outText = HtmlUtil.readPage("edit-user.html");
+//            outText = String.format(outText,login,login, firstName, secondName, login);
+//            writer.print(outText);
+        }
 		else if(action.equals("edit"))
 		{
+            PrintWriter writer = resp.getWriter();
+            writer.write(HtmlUtil.readPage("edit-user.html"));
 //			String    login     = req.getParameter("login");
-//			String    pass      = req.getParameter("pass");
-//			String    checkPass     = req.getParameter("checkPass");
-//			String    firstName      = req.getParameter("firstName");
-//			String    secondName      = req.getParameter("secondName");
-//			if(!pass.equals(checkPass)){
+//			String    oldPass      = req.getParameter("oldPass");
+//
+//			clientDAO = new ClientDAO();
+//			Client client = clientDAO.get(login);
+//
+//
+//			if(!oldPass.equals(client.getPassword())){
 //				resp.addHeader("action", "edit");
 //				resp.sendRedirect("/client");
 //			}
-//			Client client = new Client();
+//			String password = "";
+//			if (req.getParameter("checkPass").equals(req.getParameter("pass")) && req.getParameter("pass") != null) {
+//			    password = req.getParameter("pass");
+//            } else {
+//			    password = oldPass;
+//            }
+//
+//			String    firstName      = req.getParameter("firstName");
+//			String    secondName      = req.getParameter("secondName");
 //			client.setLogin(login);
-//			client.setPassword(pass);
+//			client.setPassword(password);
 //			client.setFirstName(firstName);
 //			client.setSecondName(secondName);
-//			clientDAO.save(client);
+//			clientDAO.update(client);
 //
 //			Client clientFromDB = clientDAO.get((String)client.getLogin());
-//			if(clientFromDB != null){
+//            if (client.equals(clientFromDB)){
 //				PrintWriter writer = resp.getWriter();
-//				writer.print("<h1>Congrats! You are registered!</h1> \n...go get some sleep...");
+//				writer.print("<h1>Congrats! change was successful!</h1> \n...go get some sleep...");
 //			}
-		}
-	}
-
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-	{
-		super.doPut(req, resp);
-	}
-
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-	{
-		super.doDelete(req, resp);
+		} else if(action.equals("delete"))
+        {
+            String    login     = req.getParameter("login");
+            clientDAO.delete(login);
+            PrintWriter writer = resp.getWriter();
+            writer.print("<h1>Delete was successful!</h1>");
+        }
 	}
 }

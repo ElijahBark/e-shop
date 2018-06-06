@@ -6,15 +6,25 @@
 </head>
 <body>
 <br>
-<h1>Input your credentials</h1>
+<h1>%1s</h1>
 <br>
 <form action="client" method="post">
-    <input type="hidden" value="create" name="action">
-    <input type="text" name="login" size="20" placeholder="input text" >
-    <input type="password" name="pass" size="20">
-    <input type="password" name="checkPass" size="20">
-    <input type="text" name="firstName" size="20" placeholder="input text">
-    <input type="text" name="secondName" size="20" placeholder="input text">
+    <input type="hidden" value="create" name="action" required>
+    <div>
+        <input type="text" name="login" size="20" placeholder="input text" required>
+    </div>
+    <div>
+        <input type="password" name="pass" size="20" placeholder="input password" required>
+    </div>
+    <div>
+        <input type="password" name="checkPass" size="20" placeholder="repeat password" required>
+    </div>
+    <div>
+        <input type="text" name="firstName" size="20" placeholder="input firstName" required>
+    </div>
+    <div>
+        <input type="text" name="secondName" size="20" placeholder="input secondName" required>
+    </div>
     <input type="submit" value="REGISTER">
 </form>
 </body>
