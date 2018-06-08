@@ -36,7 +36,7 @@ public class ItemServlet extends HttpServlet
                     "\nid: "+ item.getArticleId() +"<br>"+
                     "\nprice " + HtmlUtil.beatyPrice(item.getPrice()) + "<br>";
 			String outText =  HtmlUtil.readPage("item-preview.html");
-			outText = String.format(outText, itemInfo, login);
+			outText = String.format(outText, itemInfo, login, articleId);
 
 			writer.print(outText);
 		} else {
