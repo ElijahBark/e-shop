@@ -19,7 +19,7 @@ public class OrderDAO extends AbstractDAO<Order>
 			PreparedStatement statement = connection.prepareStatement(sql); )
 		{
 			statement.setString(1, order.getClientId());
-			statement.setString(2, order.getItemId());
+			statement.setInt(2, order.getItemId());
 			statement.setInt(3, order.getAmount());
 			statement.setInt(4, order.getCartId());
 
@@ -38,7 +38,7 @@ public class OrderDAO extends AbstractDAO<Order>
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
 			statement.setString(1, order.getClientId());
-			statement.setString(2, order.getItemId());
+			statement.setInt(2, order.getItemId());
 			statement.setInt(3, order.getAmount());
 			statement.setInt(4, order.getCartId());
 			statement.setInt(5, order.getOrderId());
@@ -68,7 +68,7 @@ public class OrderDAO extends AbstractDAO<Order>
 			{
 				order.setOrderId(rSet.getInt("order_id"));
 				order.setClientId(rSet.getString("client_id"));
-				order.setItemId(rSet.getString("item_id"));
+				order.setItemId(rSet.getInt("item_id"));
 				order.setAmount(rSet.getInt("amount"));
 				order.setCartId(rSet.getInt("cart_id"));
 
@@ -100,7 +100,7 @@ public class OrderDAO extends AbstractDAO<Order>
 
 				order.setOrderId(rSet.getInt("order_id"));
 				order.setClientId(rSet.getString("client_id"));
-				order.setItemId(rSet.getString("item_id"));
+				order.setItemId(rSet.getInt("item_id"));
 				order.setAmount(rSet.getInt("amount"));
 				order.setCartId(rSet.getInt("cart_id"));
 
@@ -132,7 +132,7 @@ public class OrderDAO extends AbstractDAO<Order>
 
 				order.setOrderId(rSet.getInt("order_id"));
 				order.setClientId(rSet.getString("client_id"));
-				order.setItemId(rSet.getString("item_id"));
+				order.setItemId(rSet.getInt("item_id"));
 				order.setAmount(rSet.getInt("amount"));
 				order.setCartId(rSet.getInt("cart_id"));
 
@@ -166,7 +166,7 @@ public class OrderDAO extends AbstractDAO<Order>
 
 				order.setOrderId(rSet.getInt("order_id"));
 				order.setClientId(rSet.getString("client_id"));
-				order.setItemId(rSet.getString("item_id"));
+				order.setItemId(rSet.getInt("item_id"));
 				order.setAmount(rSet.getInt("amount"));
 				order.setCartId(rSet.getInt("cart_id"));
 

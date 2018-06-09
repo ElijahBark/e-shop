@@ -14,7 +14,7 @@ public class CartDAO extends AbstractDAO<Cart>
 
     public List<Cart> getAllByLogin(String login) {
     	List<Cart> carts = new ArrayList<>();
-		String sql = "SELECT DISTINCT cart.id, cart.time FROM cart JOIN public.order AS ord ON cart.id = ord.cart_id WHERE ord.client_id = '"+ login+"'";
+		String sql = "SELECT DISTINCT cart.id, cart.time, cart.confirmed FROM cart JOIN public.order AS ord ON cart.id = ord.cart_id WHERE ord.client_id = '"+ login+"'";
     	try ( Connection connection = ConnectionToDB.getConnection();
 			  PreparedStatement statement = connection.prepareStatement(sql);
 			  ResultSet rSet = statement.executeQuery(); )
@@ -22,7 +22,8 @@ public class CartDAO extends AbstractDAO<Cart>
 			while(rSet.next()){
 				Cart cart =new Cart();
 				cart.setCartID(rSet.getInt("id"));
-				cart.setCartTime(rSet.getLong("cart_time"));
+				cart.setCartTime(rSet.getLong("time"));
+				cart.setCartConfirmed(rSet.getBoolean("confirmed"));
 				carts.add(cart);
 			}
 			return carts;
@@ -38,13 +39,14 @@ public class CartDAO extends AbstractDAO<Cart>
 
     @Override public void save(Cart cart)
 	{
-		String sql = "INSERT INTO cart(id, cart_time) VALUES(?,?)";
+		String sql = "INSERT INTO cart(id, time, confirmed) VALUES(?,?,?)";
 
 		try ( Connection connection = ConnectionToDB.getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql); )
 		{
 			statement.setInt(1, cart.getCartID());
 			statement.setLong(2, cart.getCartTime());
+			statement.setBoolean(3,cart.isCartConfirmed());
 			statement.executeUpdate();
 		}
 		catch ( SQLException e )
@@ -53,8 +55,21 @@ public class CartDAO extends AbstractDAO<Cart>
 		}
 	}
 
-	@Override public void update(Cart obj)
+	@Override public void update(Cart cart)
 	{
+		String sql = "UPDATE cart SET confirmed=? WHERE id=?";
+		try ( Connection connection = ConnectionToDB.getConnection();
+			  PreparedStatement statement = connection.prepareStatement(sql); )
+		{
+
+			statement.setBoolean(1,cart.isCartConfirmed());
+			statement.setInt(2,cart.getCartID());
+			statement.executeUpdate();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
 
 	}
 
@@ -69,7 +84,8 @@ public class CartDAO extends AbstractDAO<Cart>
 		{
 			while(rSet.next()){
 				cart.setCartID(rSet.getInt("id"));
-				cart.setCartTime(rSet.getLong("cart_time"));
+				cart.setCartTime(rSet.getLong("time"));
+				cart.setCartConfirmed(rSet.getBoolean("confirmed"));
 				return cart;
 			}
 		}

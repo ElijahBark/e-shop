@@ -18,7 +18,7 @@ public class ItemDAO extends AbstractDAO<Item>
 
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
-			statement.setString(1, item.getArticleId());
+			statement.setInt(1, item.getArticleId());
 			statement.setString(2, item.getName());
 			statement.setInt(3, item.getPrice());
 
@@ -36,7 +36,7 @@ public class ItemDAO extends AbstractDAO<Item>
 
 		try ( Connection connection = ConnectionToDB.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); )
 		{
-			statement.setString(3, item.getArticleId());
+			statement.setInt(3, item.getArticleId());
 			statement.setString(1, item.getName());
 			statement.setInt(2, item.getPrice());
 
@@ -62,7 +62,7 @@ public class ItemDAO extends AbstractDAO<Item>
 		{
 			while ( rSet.next() )
 			{
-				item.setArticleId(rSet.getString("article_id"));
+				item.setArticleId(rSet.getInt("article_id"));
 				item.setName(rSet.getString("name"));
 				item.setPrice(rSet.getInt("price"));
 
@@ -109,7 +109,7 @@ public class ItemDAO extends AbstractDAO<Item>
 			while ( rSet.next() )
 			{
 				Item item = new Item();
-				item.setArticleId(rSet.getString("article_id"));
+				item.setArticleId(rSet.getInt("article_id"));
 				item.setName(rSet.getString("name"));
 				item.setPrice(rSet.getInt("price"));
 

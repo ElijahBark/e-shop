@@ -38,7 +38,7 @@ public class HtmlUtil
 		return outText;
 	}
 
-    public static String getItems() {
+    public static String getItems(String login) {
 		String outText ="";
 		ItemDAO itemDAO = new ItemDAO();
 		List<Item> items = itemDAO.getAll();
@@ -58,7 +58,7 @@ public class HtmlUtil
 				outText += "</td\n>";
 
 				outText += "<td>\n";
-                outText += getItemPage(item.getArticleId(), item.getName());
+                outText += getItemPage(item.getArticleId(), login);
 				outText += "<td\n>";
 				outText += "</tr>\n";
 			}
@@ -71,7 +71,7 @@ public class HtmlUtil
 		return d;
 	}
 
-    private static String getItemPage(String articleId, String login) {
+    private static String getItemPage(Integer articleId, String login) {
         String outText ="";
         outText += "<form action=\"item\" method=\"post\">\n";
         outText +="\t<input type=\"hidden\" name=\"action\" value=\"preview\">\n";

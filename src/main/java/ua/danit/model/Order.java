@@ -3,7 +3,7 @@ package ua.danit.model;
 public class Order
 {
 	private Integer orderId;
-	private String itemId;
+	private Integer itemId;
 	private Integer amount;
 	private String clientId;
 	private Integer cartId;
@@ -28,12 +28,12 @@ public class Order
 		this.orderId = orderId;
 	}
 
-	public String getItemId()
+	public Integer getItemId()
 	{
 		return itemId;
 	}
 
-	public void setItemId(String itemId)
+	public void setItemId(Integer itemId)
 	{
 		this.itemId = itemId;
 	}

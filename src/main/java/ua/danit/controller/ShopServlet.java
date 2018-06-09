@@ -16,7 +16,9 @@ public class ShopServlet extends HttpServlet
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
 		PrintWriter writer = resp.getWriter();
-		writer.print(HtmlUtil.readPage("index.html"));
+		String outText = HtmlUtil.readPage("index.html");
+		outText = String.format(outText, "Input your login and password!!");
+		writer.print(outText);
 	}
 
 	@Override

@@ -1,21 +1,31 @@
 package ua.danit.model;
 
+import ua.danit.utils.IdMaker;
+
 public class Cart
 {
 
 	private Integer cartID;
 	private Long cartTime;
 
-	public Cart()
-	{
-		this.cartID = genereate();
+	private boolean cartConfirmed;
+
+
+	public Cart() {
+		this.cartID = IdMaker.makeId();
+		this.cartTime = System.currentTimeMillis();
+		this.cartConfirmed = false;
 	}
 
-	private Integer genereate()
-	{
-		//TODO
-		return null;
+
+	public boolean isCartConfirmed() {
+		return cartConfirmed;
 	}
+
+	public void setCartConfirmed(boolean cartConfirmed) {
+		this.cartConfirmed = cartConfirmed;
+	}
+
 
 	public Integer getCartID()
 	{

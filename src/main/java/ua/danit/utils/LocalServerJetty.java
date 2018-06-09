@@ -3,6 +3,7 @@ package ua.danit.utils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import ua.danit.controller.CartServlet;
 import ua.danit.controller.ClientServlet;
 import ua.danit.controller.ItemServlet;
 import ua.danit.controller.ShopServlet;
@@ -21,6 +22,10 @@ public class LocalServerJetty
 
 		ServletHolder itemHolder = new ServletHolder(new ItemServlet());
 		handler.addServlet(itemHolder, "/item");
+
+		ServletHolder cartHolder = new ServletHolder(new CartServlet());
+		handler.addServlet(cartHolder, "/cart");
+
 
 		server.setHandler(handler);
 		try
